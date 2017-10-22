@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import click
+import twitter_client
 
 @click.group()
 def run():
@@ -10,7 +11,7 @@ def run():
 def update(message):
     if not message:
         return
-    client = get_client()
+    client = twitter_client.get_client()
     client.update_status(message)
     click.echo('Tweet "%s"' % message)
 
