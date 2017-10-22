@@ -11,22 +11,23 @@ CONSUMER_SECRET_KEY = '***'
 '''
 
 def get_client():
-    auth = tweepy.OAuthHandler(credentials.CONSUMER_KEY, credentials.CONSUMER_SECRET_KEY)
-
     try:
         with open('.token.json', 'r') as f:
             token = json.load(f)
+        auth = tweepy.OAuthHandler(credentials.CONSUMER_KEY, credentials.CONSUMER_SECRET_KEY)
+        auth.set_access_token(token['ACCESS_TOKEN'], token['ACCESS_TOKEN_SECRET'])
     except FileNotFoundError as e:
-        token = authorize(auth)
-    ACCESS_TOKEN = token['ACCESS_TOKEN']
-    ACCESS_TOKEN_SECRET = token['ACCESS_TOKEN_SECRET']
+        auth = authorize()
+    except KeyError as e:
+        auth = authorize()
 
-    auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
     return api
 
 
-def authorize(auth):
+def authorize():
+    auth = tweepy.OAuthHandler(credentials.CONSUMER_KEY, credentials.CONSUMER_SECRET_KEY)
+
     # get access token from the user and redirect to auth URL
     try:
         redirect_url = auth.get_authorization_url()
@@ -50,4 +51,4 @@ def authorize(auth):
     }
     with open('.token.json', 'w') as f:
         json.dump(token, f)
-    return token
+    return auth
