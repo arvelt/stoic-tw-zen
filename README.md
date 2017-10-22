@@ -6,3 +6,8 @@ A twitter client only tweet.
 ```
 python main.py update 'Tweet from CLI.'
 ```
+
+TODO
+validate 140
+care token error
+console command 'tw'
