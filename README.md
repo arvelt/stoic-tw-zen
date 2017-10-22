@@ -11,3 +11,4 @@ TODO
 - validate 140
 - care token error
 - console command 'tw'
+- encrypting credentials
